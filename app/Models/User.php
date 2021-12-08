@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Exception;
 
 class User extends Authenticatable
 {
@@ -18,9 +21,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
+        'username',
     ];
 
     /**
@@ -41,4 +44,29 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function usernameExists($username)
+    {
+        return static::where('username', Str::lower($username))->exists();
+    }
+
+    public function register($data)
+    {
+        DB::beginTransaction();
+
+        try {
+            $user = static::create([
+                'username' => Str::lower($data['username'])
+            ]);
+            $token = $user->createToken('register_token');
+
+            DB::commit();
+
+            return $token->plainTextToken;
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            throw new Exception($e->getMessage());
+        }
+    }
 }
