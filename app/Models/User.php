@@ -24,6 +24,7 @@ class User extends Authenticatable
         'email',
         'password',
         'username',
+        'balance'
     ];
 
     /**
@@ -68,5 +69,15 @@ class User extends Authenticatable
 
             throw new Exception($e->getMessage());
         }
+    }
+
+    public function topups()
+    {
+        return $this->hasMany(UserTopup::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
     }
 }
