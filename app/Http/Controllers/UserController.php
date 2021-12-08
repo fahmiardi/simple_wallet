@@ -31,8 +31,8 @@ class UserController extends Controller
             'username' => $request->username
         ]);
 
-        return [
+        return response()->json([
             'token' => $token
-        ];
+        ], 201);
     }
 }
