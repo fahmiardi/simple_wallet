@@ -31,4 +31,11 @@ class BalanceController extends Controller
 
         return response('', 204);
     }
+
+    public function show(Request $request)
+    {
+        return response()->json([
+            'balance' => (float) $request->user()->balance,
+        ]);
+    }
 }

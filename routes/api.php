@@ -25,3 +25,4 @@ Route::post('/create_user', [UserController::class, 'store']);
 
 // user balance
 Route::middleware('auth:sanctum')->post('/balance_topup', [BalanceController::class, 'topup']);
+Route::middleware('auth:sanctum')->get('/balance_read', [BalanceController::class, 'show']);
