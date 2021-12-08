@@ -14,7 +14,7 @@ class AddUserBalance extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->decimal('balance')->default(0);
+            $table->decimal('balance', 8, 1)->default(0);
         });
     }
 

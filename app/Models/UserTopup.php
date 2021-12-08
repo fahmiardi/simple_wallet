@@ -66,4 +66,13 @@ class UserTopup extends Model
             throw new Exception($e->getMessage());
         }
     }
+
+    public function maximumBalance($userBalance, $amount)
+    {
+        $newBalance = $userBalance + $amount;
+
+        if ($newBalance < config('app.max_balance')) return false;
+
+        return $newBalance;
+    }
 }

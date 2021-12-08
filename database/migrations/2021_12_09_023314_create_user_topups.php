@@ -15,7 +15,7 @@ class CreateUserTopups extends Migration
     {
         Schema::create('user_topups', function (Blueprint $table) {
             $table->id();
-            $table->decimal('amount');
+            $table->decimal('amount', 8, 1);
             $table->enum('status', ['pending', 'canceled', 'done'])->default('pending');
             $table->foreignId('user_id');
             $table->timestamps();

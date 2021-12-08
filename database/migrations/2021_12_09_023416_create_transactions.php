@@ -15,10 +15,10 @@ class CreateTransactions extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->decimal('amount');
+            $table->decimal('amount', 8, 1);
             $table->enum('type', ['debit', 'credit']);
-            $table->decimal('balance_before');
-            $table->decimal('balance_after');
+            $table->decimal('balance_before', 8, 1);
+            $table->decimal('balance_after', 8, 1);
             $table->morphs('fromable');
             $table->foreignId('user_id');
             $table->timestamps();

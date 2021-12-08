@@ -232,4 +232,7 @@ return [
 
     ],
 
+    // max balance
+    'max_balance' => env('APP_MAX_BALANCE', 10000000),
+
 ];
