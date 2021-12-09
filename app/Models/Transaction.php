@@ -34,9 +34,4 @@ class Transaction extends Model
     {
         return $this->morphTo('fromable');
     }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }

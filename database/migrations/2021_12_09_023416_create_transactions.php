@@ -20,14 +20,10 @@ class CreateTransactions extends Migration
             $table->decimal('balance_before', 8, 1);
             $table->decimal('balance_after', 8, 1);
             $table->morphs('fromable');
-            $table->foreignId('user_id');
             $table->timestamps();
 
             // composite index
-            $table->unique(['fromable_type', 'fromable_id']);
-
-            // foregin key constraints
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->unique(['type', 'fromable_type', 'fromable_id']);
         });
     }
 
