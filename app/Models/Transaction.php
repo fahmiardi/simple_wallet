@@ -69,4 +69,25 @@ class Transaction extends Model
 
         return $results;
     }
+
+    public function transactionsByValue($limit = 10)
+    {
+        $transactions = static::query()
+            ->join('user_transfers', 'user_transfers.id', '=', 'transactions.fromable_id')
+            ->join('users', 'users.id', '=', 'transactions.user_id')
+            ->selectRaw('users.username, sum(user_transfers.amount) as transacted_value')
+            ->where('type', 'debit')
+            ->groupBy('transactions.user_id')
+            ->orderByDesc('transacted_value')
+            ->limit($limit)
+            ->get()
+            ->map(function ($transaction) {
+                return [
+                    'username' => $transaction->username,
+                    'transacted_value' => (float) $transaction->transacted_value,
+                ];
+            });
+
+        return $transactions;
+    }
 }

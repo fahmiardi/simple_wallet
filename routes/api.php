@@ -34,3 +34,4 @@ Route::middleware('auth:sanctum')->post('/transfer', [TransferController::class,
 
 // transaction
 Route::middleware('auth:sanctum')->get('/top_transactions_per_user', [TransactionController::class, 'topTransactions']);
+Route::middleware('auth:sanctum')->get('/top_users', [TransactionController::class, 'topUsers']);
