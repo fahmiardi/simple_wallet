@@ -55,19 +55,25 @@ class UserTransfer extends Model
             $transfer->toUser()->associate($toUser);
             $transfer->save();
             
-            // generate transactio
-            $transfer->transactions()->saveMany([
-                new Transaction([
-                    'type' => 'credit',
-                    'balance_before' => $toUser->balance,
-                    'balance_after' => $newBalanceTo = $toUser->balance + $amount,
-                ]),
-                new Transaction([
-                    'type' => 'debit',
-                    'balance_before' => $fromUser->balance,
-                    'balance_after' => $newBalanceFrom = $fromUser->balance - $amount,
-                ]),
+            // generate transaction credit
+            $transactionCredit = new Transaction([
+                'type' => 'credit',
+                'balance_before' => $toUser->balance,
+                'balance_after' => $newBalanceTo = $toUser->balance + $amount,
             ]);
+            $transactionCredit->fromable()->associate($transfer);
+            $transactionCredit->user()->associate($toUser);
+            $transactionCredit->save();
+
+            // generate transaction debit
+            $transactionDebit = new Transaction([
+                'type' => 'debit',
+                'balance_before' => $fromUser->balance,
+                'balance_after' => $newBalanceFrom = $fromUser->balance - $amount,
+            ]);
+            $transactionDebit->fromable()->associate($transfer);
+            $transactionDebit->user()->associate($fromUser);
+            $transactionDebit->save();
 
             // update destination balance
             $toUser->balance = $newBalanceTo;

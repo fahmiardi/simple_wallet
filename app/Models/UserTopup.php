@@ -45,11 +45,14 @@ class UserTopup extends Model
             ]);
             
             // create transaction
-            $transaction = $topup->transaction()->create([
+            $transaction = new Transaction([
                 'type' => 'credit',
                 'balance_before' => $user->balance,
                 'balance_after' => $newBalance = $user->balance + $amount,
             ]);
+            $transaction->fromable()->associate($topup);
+            $transaction->user()->associate($user);
+            $transaction->save();
 
             // update balance user
             $user->balance = $newBalance;

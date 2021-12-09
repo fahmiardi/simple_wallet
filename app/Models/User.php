@@ -81,9 +81,14 @@ class User extends Authenticatable
         return $this->hasMany(UserTransfer::class);
     }
 
-    public function toTransfers(Type $var = null)
+    public function toTransfers()
     {
         return $this->hasMany(UserTransfer::class, 'to_user_id');
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
     }
 
     public function maximumBalance($userBalance, $amount)

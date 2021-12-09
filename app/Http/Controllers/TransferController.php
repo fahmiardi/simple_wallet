@@ -25,18 +25,27 @@ class TransferController extends Controller
             'amount' => 'required|numeric'
         ]);
 
+        // validate request
         if ($validator->fails()) {
             return response('Bad Request', 400);
         }
         
+        // validate username exits
         if (! $toUser = $this->user->usernameExists($request->to_username)) {
             return response('Destination user not found', 404);
         }
 
+        // make sure destination username is different with user
+        if ($toUser->username === $request->to_username) {
+            return response('Bad Request', 400);
+        }
+
+        // check if enough balance
         if (! $this->user->enoughBalance($request->user()->balance, $request->amount)) {
             return response('Insufficient sender balance', 400);
         }
 
+        // check if maximum balance
         if ($this->user->maximumBalance($toUser->balance, $request->amount)) {
             return response('Insufficient receiver balance', 400);
         }

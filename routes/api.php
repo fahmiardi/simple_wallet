@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BalanceController;
 use App\Http\Controllers\TransferController;
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,3 +31,6 @@ Route::middleware('auth:sanctum')->get('/balance_read', [BalanceController::clas
 
 // transfer
 Route::middleware('auth:sanctum')->post('/transfer', [TransferController::class, 'store']);
+
+// transaction
+Route::middleware('auth:sanctum')->get('/top_transactions_per_user', [TransactionController::class, 'topTransactions']);

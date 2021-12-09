@@ -18,11 +18,15 @@ class CreateTransactions extends Migration
             $table->enum('type', ['debit', 'credit']);
             $table->decimal('balance_before', 8, 1);
             $table->decimal('balance_after', 8, 1);
+            $table->foreignId('user_id');
             $table->morphs('fromable');
             $table->timestamps();
 
             // composite index
             $table->unique(['type', 'fromable_type', 'fromable_id']);
+
+            // foregin key constraints
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
