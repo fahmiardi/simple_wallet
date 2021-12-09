@@ -14,7 +14,7 @@ class TransactionController extends Controller
         $this->transaction = $transaction;
     }
 
-    public function topTransactionsByUser(Request $request)
+    public function topTransactions(Request $request)
     {
         return response()->json($this->transaction->transactionsByUser($request->user()));
     }
