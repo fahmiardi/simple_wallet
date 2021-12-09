@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 
 class UserController extends Controller
@@ -17,14 +17,16 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'username' => 'required'
         ]);
 
+        if ($validator->fails()) {
+            return response('Bad Request', 400);
+        }
+
         if ($this->user->usernameExists($request->username)) {
-            throw ValidationException::withMessages([
-                'username' => ['username exists']
-            ]);
+            return response('Username already exists', 409);
         }
 
         $token = $this->user->register([

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Validator;
 use App\Models\UserTopup;
 
 class BalanceController extends Controller
@@ -17,14 +17,16 @@ class BalanceController extends Controller
 
     public function topup(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'amount' => 'required|numeric'
         ]);
 
+        if ($validator->fails()) {
+            return response('Invalid topup amount', 400);
+        }
+
         if ($newBalance = $this->userTopup->maximumBalance($request->user()->balance, $request->amount)) {
-            throw ValidationException::withMessages([
-                'amount' => ['balance must lower than: '.number_format(config('app.max_balance')).'. New balance: '.number_format($newBalance)]
-            ]);
+            return response('Invalid topup amount', 400);
         }
         
         $this->userTopup->topup($request->user(), $request->amount);
