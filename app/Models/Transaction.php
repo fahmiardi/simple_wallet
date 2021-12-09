@@ -17,7 +17,6 @@ class Transaction extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'amount',
         'type',
         'balance_before',
         'balance_after'

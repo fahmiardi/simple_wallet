@@ -15,7 +15,6 @@ class CreateTransactions extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->decimal('amount', 8, 1);
             $table->enum('type', ['debit', 'credit']);
             $table->decimal('balance_before', 8, 1);
             $table->decimal('balance_after', 8, 1);

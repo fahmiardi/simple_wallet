@@ -46,7 +46,6 @@ class UserTopup extends Model
             
             // create transaction
             $transaction = $topup->transaction()->create([
-                'amount' => $amount,
                 'type' => 'credit',
                 'balance_before' => $user->balance,
                 'balance_after' => $newBalance = $user->balance + $amount,
