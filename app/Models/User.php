@@ -48,7 +48,7 @@ class User extends Authenticatable
 
     public function usernameExists($username)
     {
-        return static::where('username', Str::lower($username))->exists();
+        return static::where('username', Str::lower($username))->first();
     }
 
     public function register($data)
@@ -74,5 +74,27 @@ class User extends Authenticatable
     public function topups()
     {
         return $this->hasMany(UserTopup::class);
+    }
+
+    public function transfers()
+    {
+        return $this->hasMany(UserTransfer::class);
+    }
+
+    public function toTransfers(Type $var = null)
+    {
+        return $this->hasMany(UserTransfer::class, 'to_user_id');
+    }
+
+    public function maximumBalance($userBalance, $amount)
+    {
+        $newBalance = $userBalance + $amount;
+
+        return ($newBalance < config('app.max_balance')) ? false : true;
+    }
+
+    public function enoughBalance($userBalance, $amount)
+    {
+        return ($userBalance >= $amount) ? true : false;
     }
 }

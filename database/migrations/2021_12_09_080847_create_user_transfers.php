@@ -15,7 +15,14 @@ class CreateUserTransfers extends Migration
     {
         Schema::create('user_transfers', function (Blueprint $table) {
             $table->id();
+            $table->decimal('amount', 8, 1);
+            $table->foreignId('user_id');
+            $table->foreignId('to_user_id');
             $table->timestamps();
+
+            // foregin key constraints
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('to_user_id')->references('id')->on('users');
         });
     }
 
