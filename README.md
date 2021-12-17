@@ -1,26 +1,37 @@
-## Installation
+### Installation
+- `git clone https://github.com/fahmiardi/simple_wallet.git`
+- `cd simple_wallet`
+- `cp .env.example .env`
+- `composer install`
+- `php artisan key:generate --ansi`
+- edit file `.env`
+  * DB_HOST=mysql
+  * DB_DATABASE=wallets
+  * DB_USERNAME=sail
+  * DB_PASSWORD=password
 
-### Laravel Sail
-[Documentation](https://laravel.com/docs/8.x/sail)
+### Environment
+- add command `alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'` to file `~/.profile`
+- reload bash `source ~/.profile`
 
-Copy to bash `.profile`
-```bash
-alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
-```
+### Start Docker Container
+`sail up -d`
 
-Run sail docker container
-```bash
-HOME:~/simple_wallet$ sail up
-```
+### Migrate database
+`sail php artisan migrate`
 
-### Migration Database
-Open in New Terminal
-```bash
-HOME:~/simple_wallet$ sail php artisan migrate
-```
+### Stop Docker Container
+`sail stop`
 
-### Postman
-Base API url `localhost/api/*`
+### Remote database on container
+- host: 127.0.0.1
+- port: 3306
+- user: sail
+- password: password
+- database: wallets
 
-## Developed By
-f4hem
+### Base api url
+`localhost/api/*`
+
+### Developed by
+[f4hem](mailto:f4hem.net@gmail.com)
